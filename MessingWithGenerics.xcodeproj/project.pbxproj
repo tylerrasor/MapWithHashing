@@ -30,6 +30,7 @@
 		CE1D533019412EA300A170B6 /* MessingWithGenericsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MessingWithGenericsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE1D533519412EA300A170B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE1D533619412EA300A170B6 /* MessingWithGenericsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessingWithGenericsTests.swift; sourceTree = "<group>"; };
+		CE1D534019412EB000A170B6 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +54,7 @@
 		CE1D531A19412EA300A170B6 = {
 			isa = PBXGroup;
 			children = (
+				CE1D534019412EB000A170B6 /* MyPlayground.playground */,
 				CE1D532519412EA300A170B6 /* MessingWithGenerics */,
 				CE1D533319412EA300A170B6 /* MessingWithGenericsTests */,
 				CE1D532419412EA300A170B6 /* Products */,
