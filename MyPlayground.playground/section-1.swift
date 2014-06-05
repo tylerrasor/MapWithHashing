@@ -102,6 +102,19 @@ struct MapWithHashing<T,U> {
         return (nil, nil)
     }
     
+    mutating func removeAny() -> (T?, U?) {
+        for i in 0..keys.count {
+            for j in 0..keys[i].count {
+                if !keys[i].isEmpty {
+                    var pair: (T?, U?) = (keys[i].removeAtIndex(j), values[i].removeAtIndex(j))
+                    return pair
+                }
+            }
+        }
+        
+        return (nil, nil)
+    }
+    
     func equals(first: T, second: T) -> Bool {
         switch first {
         case let num as Int:
@@ -149,3 +162,6 @@ map2.hasKey("three")
 map2.hasKey("one")
 map2.remove("one")
 map2.hasKey("one")
+
+var removed = map2.removeAny()
+map2.hasKey(removed.0!)
