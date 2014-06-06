@@ -3,13 +3,22 @@
 import UIKit
 
 //Class for testing map with classes
-class Person {
-    var name: String
+class Person: NSObject {
+    var name: String?
     var number: Int
+    override var hashValue: Int { return number }
+    
+    init(number: Int) {
+        self.number = number
+    }
     
     init(name: String, number:Int) {
         self.name = name
         self.number = number
+    }
+    
+    override func isEqual(object: AnyObject!) -> Bool {
+        return object.number == number
     }
 }
 
@@ -22,7 +31,7 @@ class Person {
  * coded by type.
  */
 
-struct MapWithHashing<T,U> {
+struct MapWithHashing<T: Hashable, U where T: Equatable> {
     let numberOfBuckets: Int
     var keys: Array<Array<T>> = []
     var values: Array<Array<U>> = []
@@ -56,21 +65,6 @@ struct MapWithHashing<T,U> {
         }
     }
     
-    func hash(input:T) -> Int {
-        switch input {
-        case let num as Int:
-            return num
-        case let str as String:
-            let value = str.lengthOfBytesUsingEncoding(NSUTF8StringEncoding)
-            return value
-        case let doub as Double:
-            let value = doub.hashValue
-            return value
-        default:
-            return 0
-        }
-    }
-    
     func mod(a:Int, b:Int) -> Int {
         var bucketIndex = a % b
         if bucketIndex < 0 {
@@ -80,19 +74,19 @@ struct MapWithHashing<T,U> {
     }
     
     mutating func add(key:T, value:U) {
-        let index = mod(hash(key), b: numberOfBuckets)
+        let index = mod(key.hashValue, b: numberOfBuckets)
         keys[index].append(key)
         values[index].append(value)
         ++internalSize
     }
     
     mutating func remove(key:T) -> (T?, U?) {
-        let index = mod(hash(key), b:numberOfBuckets)
+        let index = mod(key.hashValue, b:numberOfBuckets)
         var value: U
         --internalSize
         for i in 0..keys[index].count {
             let currentKey: T = keys[index].removeAtIndex(i)
-            if equals(key, second: currentKey) {
+            if key == currentKey {
                 return (key, values[index].removeAtIndex(i))
             } else {
                 keys[index].insert(currentKey, atIndex: i)
@@ -115,25 +109,10 @@ struct MapWithHashing<T,U> {
         return (nil, nil)
     }
     
-    func equals(first: T, second: T) -> Bool {
-        switch first {
-        case let num as Int:
-            return num == second as Int
-        case let str as String:
-            return str == second as String
-        case let doub as Double:
-            return doub == second as Double
-        case let person as Person:
-            return person.name == (second as Person).name
-        default:
-            return false
-        }
-    }
-    
     func hasKey(key: T) -> Bool {
-        let index = mod(hash(key), b: numberOfBuckets)
+        let index = mod(key.hashValue, b: numberOfBuckets)
         for i in 0..keys[index].count{
-            if equals(key, second:keys[index][i]) {
+            if key == keys[index][i] {
                 return true
             }
         }
@@ -145,14 +124,11 @@ struct MapWithHashing<T,U> {
     }
 }
 
+var jenny = Person(name: "Jenny", number: 8675309)
 var map = MapWithHashing<Person, String>()
-var jenny = Person(name: "jenny", number: 8675309)
 map.add(jenny, value: "I got your number")
-
-if map.hasKey(jenny) {
-    var whoCanITurnTo = map.remove(jenny)
-    println("\(whoCanITurnTo.0!.name), \(whoCanITurnTo.1)")
-}
+var justNumber = Person(number: 8675309)
+map.hasKey(justNumber)
 
 var map2 = MapWithHashing<String, Int>()
 map2.add("one", value: 1)
@@ -165,3 +141,6 @@ map2.hasKey("one")
 
 var removed = map2.removeAny()
 map2.hasKey(removed.0!)
+
+let 😊 = { (input: String) -> () in println("\(input) makes me happy") }
+😊("This")
