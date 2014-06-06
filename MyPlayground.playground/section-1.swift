@@ -23,19 +23,19 @@ class Person {
  */
 
 struct MapWithHashing<T,U> {
-    let numberOfBuckets: Int?
+    let numberOfBuckets: Int
     var keys: Array<Array<T>> = []
     var values: Array<Array<U>> = []
     var internalSize = 0
     
     init() {
         numberOfBuckets = 5
-        for i in 0..numberOfBuckets! {
+        for i in 0..numberOfBuckets {
             keys.append([])
             values.append([])
         }
-        for i in 0..numberOfBuckets! {
-            for j in 0..numberOfBuckets!{
+        for i in 0..numberOfBuckets {
+            for j in 0..numberOfBuckets{
                 keys[i] = []
                 values[i] = []
             }
@@ -44,12 +44,12 @@ struct MapWithHashing<T,U> {
     
     init(numBuckets: Int) {
         numberOfBuckets = numBuckets
-        for i in 0..numberOfBuckets! {
+        for i in 0..numberOfBuckets {
             keys.append([])
             values.append([])
         }
-        for i in 0..numberOfBuckets! {
-            for j in 0..numberOfBuckets!{
+        for i in 0..numberOfBuckets {
+            for j in 0..numberOfBuckets{
                 keys[i] = []
                 values[i] = []
             }
@@ -80,14 +80,14 @@ struct MapWithHashing<T,U> {
     }
     
     mutating func add(key:T, value:U) {
-        let index = mod(hash(key), b: numberOfBuckets!)
+        let index = mod(hash(key), b: numberOfBuckets)
         keys[index].append(key)
         values[index].append(value)
         ++internalSize
     }
     
     mutating func remove(key:T) -> (T?, U?) {
-        let index = mod(hash(key), b:numberOfBuckets!)
+        let index = mod(hash(key), b:numberOfBuckets)
         var value: U
         --internalSize
         for i in 0..keys[index].count {
@@ -131,7 +131,7 @@ struct MapWithHashing<T,U> {
     }
     
     func hasKey(key: T) -> Bool {
-        let index = mod(hash(key), b: numberOfBuckets!)
+        let index = mod(hash(key), b: numberOfBuckets)
         for i in 0..keys[index].count{
             if equals(key, second:keys[index][i]) {
                 return true
